@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #222;
+        }
+        /* Container dos cards */
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        /* Estilo base para os cards */
+        .card {
+            flex: 1 1 200px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        /* Cards específicos */
+        .card-lucro {
+            background-color: #4caf50; /* verde */
+        }
+        .card-despesa {
+            background-color: #e74c3c; /* vermelho */
+        }
+        .card-saldo {
+            background-color: #ffffff; /* branco */
+            color: #333;
+            border: 2px solid #ccc;
+        }
+
+        /* Formulários */
+        form {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+        form h2 {
+            margin-top: 0;
+            color: #444;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="number"]:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+        button {
+            background-color: #4caf50;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[name="adicionar_despesa"] {
+            background-color: #e74c3c;
+        }
+        button:hover {
+            filter: brightness(90%);
+        }
+        .forms-container {
+            display: flex;
+            gap: 20px;
+            max-width: 850px;
+        }
+
+        .forms-container form {
+            flex: 1 1 45%;
+            min-width: 280px;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn-voltar:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn-logout:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bem-vindo, {{ request.user.username }}!</h1>
+
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">Sair</button>
+    </form>
+
+    <h2>Resumo financeiro</h2>
+    <div class="cards-container">
+        <div class="card card-lucro">
+            Total de Lucros:<br>
+            R$ {{ total_lucro }}
+        </div>
+        <div class="card card-despesa">
+            Total de Despesas:<br>
+            R$ {{ total_despesa }}
+        </div>
+        <div class="card card-saldo">
+            Saldo:<br>
+            R$ {{ saldo }}
+        </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+            <a href="{% url 'objetivos' %}" class="btn-voltar">← Conferir objetivos</a>
+    </div>
+
+    <div class="forms-container">
+        <form method="post">
+            {% csrf_token %}
+            <h2>Adicionar Lucro</h2>
+            {{ lucro_form.valor.label_tag }}
+            {{ lucro_form.valor }}
+            <button type="submit" name="adicionar_lucro">Adicionar Lucro</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            <h2>Adicionar Despesa</h2>
+            {{ despesa_form.valor.label_tag }}
+            {{ despesa_form.valor }}
+            <button type="submit" name="adicionar_despesa">Adicionar Despesa</button>
+        </form>
+    </div>
+</body>
+</html>

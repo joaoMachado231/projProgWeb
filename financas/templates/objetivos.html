@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Objetivos Financeiros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f8fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .saldo {
+            background-color: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-section {
+            background-color: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .form-section form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            flex: 1;
+        }
+
+        button {
+            padding: 8px 14px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .objetivos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .objetivo-card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .objetivo-card h3 {
+            margin-top: 0;
+        }
+
+        .objetivo-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .objetivo-card button {
+            background-color: #28a745;
+        }
+
+        .objetivo-card button.remover {
+            background-color: #dc3545;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn-voltar:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-excluir {
+            background-color: transparent !important;
+            border: 1px solid #dc3545;
+            color: #dc3545;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-excluir:hover {
+            background-color: #dc3545 !important;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="{% url 'home' %}" class="btn-voltar">← Voltar à Home</a>
+        </div>
+
+        <h1>Objetivos Financeiros</h1>
+
+        <div class="saldo">
+            <strong>Saldo da Conta:</strong> R$ {{ saldo }}
+        </div>
+
+        <div class="form-section">
+            <h2>Adicionar Novo Objetivo</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.nome.label_tag }} {{ form.nome }}
+                {{ form.valor_meta.label_tag }} {{ form.valor_meta }}
+                <button type="submit" name="adicionar_objetivo">Adicionar Objetivo</button>
+            </form>
+        </div>
+
+        <h2>Meus Objetivos</h2>
+        <div class="objetivos-container">
+            {% for objetivo in objetivos %}
+                <div class="objetivo-card" style="position: relative;">
+                    <form method="post" style="position: absolute; top: 10px; right: 10px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="objetivo_id" value="{{ objetivo.id }}">
+                        <button type="submit" name="excluir_objetivo" class="btn-excluir" title="Excluir objetivo">×</button>
+                    </form>
+
+                    <h3>{{ objetivo.nome }}</h3>
+                    <p><strong>Meta:</strong> R$ {{ objetivo.valor_meta }}</p>
+                    <p><strong>Atual:</strong> R$ {{ objetivo.valor_atual }}</p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ movimento_form.valor.label_tag }} {{ movimento_form.valor }}
+                        <input type="hidden" name="objetivo_id" value="{{ objetivo.id }}">
+                        <button type="submit" name="adicionar_valor">Adicionar Valor</button>
+                        <button type="submit" name="remover_valor" class="remover">Remover Valor</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>Você ainda não tem objetivos cadastrados.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+# Ambiente virtual
+venv/
+env/
+ENV/
+venv.bak/
+env.bak/
+
+# Arquivos Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pastas de migrações do Django (opcional, mas geralmente você quer versionar)
+# Se quiser ignorar migrações, descomente a linha abaixo
+# **/migrations/
+
+# Arquivos de banco de dados local SQLite
+*.sqlite3
+
+# Arquivos de log
+*.log
+
+# Arquivos estáticos coletados
+/staticfiles/
+/static/
+
+# Arquivos de cache do Django
+*.pyc
+
+# Arquivos de configuração do editor e sistema operacional
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Arquivos de cobertura de testes
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Arquivos de pipenv (se usar)
+Pipfile.lock
+
+# Arquivos pyenv
+.python-version
+
+# Arquivos de pacote/ distribuição
+*.egg-info/
+dist/
+build/
+.eggs/
