@@ -65,22 +65,18 @@
 <body>
     <div class="container">
         <h1>Cadastro de Usuário</h1>
-        <form method="post">
-          {% csrf_token %}
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <label for="email">Nome de usuário</label>
+            <input type="text" id="userName" name="userName" placeholder="Digite seu nome de usuario" required />
 
-          <label for="{{ form.username.id_for_label }}">Usuário</label>
-          {{ form.username }}
-          {% for error in form.username.errors %}
-            <div style="color: red;">{{ error }}</div>
-          {% endfor %}
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Digite seu email" required />
 
-          <label for="{{ form.password1.id_for_label }}">Senha</label>
-          {{ form.password1 }}
-          {% for error in form.password1.errors %}
-            <div style="color: red;">{{ error }}</div>
-          {% endfor %}
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" placeholder="Digite sua senha" required />
 
-          <button type="submit">Cadastrar</button>
+            <button type="submit">Cadastrar</button>
         </form>
         <p>Já tem conta? <a href="{% url 'login' %}">Faça login aqui</a></p>
     </div>
